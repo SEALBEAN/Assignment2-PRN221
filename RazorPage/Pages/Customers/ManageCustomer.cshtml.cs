@@ -15,10 +15,8 @@ namespace RazorPage.Pages.Customers
         public IActionResult OnPostUpdateCustomer(string customerId)
         {
 
-            // Store the customer in TempData
             HttpContext.Session.SetString("CustomerID", customerId);
 
-            // Redirect to the "/EditCustomer" page
             return RedirectToPage("/Customers/EditCustomer");
         }
 

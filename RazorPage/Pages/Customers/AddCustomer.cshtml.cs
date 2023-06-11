@@ -8,10 +8,10 @@ namespace RazorPage.Pages.Customers
 {
     public class AddCustomerModel : PageModel
     {
-        // Add the customer to the repository
+
         public IActionResult OnPostAddCustomer()
         {
-            // Get the customer from the form data
+
             BusinessObject.Customer customer = new BusinessObject.Customer();
             customer.CustomerName = Request.Form["customerName"];
             customer.Email = Request.Form["email"];
@@ -22,7 +22,7 @@ namespace RazorPage.Pages.Customers
                 customer.Birthday = DateTime.Parse(Request.Form["Birthday"]);
             }
             customer.Country = Request.Form["Country"];
-            //Check is there any duplicate email if yes alert duplicate email and not add to database
+
             ICustomerRepository customers = new CustomerRepository();
             if (customers.GetCustomers().Where(x => x.Email == customer.Email).FirstOrDefault() != null)
             {

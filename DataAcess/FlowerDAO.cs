@@ -72,8 +72,11 @@ namespace DataAcess
             try
             {
                 var dbContext = new FUFlowerBouquetManagementContext();
+                var nextId = dbContext.FlowerBouquets.OrderByDescending(x => x.FlowerBouquetId).FirstOrDefault().FlowerBouquetId;
+                int status = 0;
+                flower.FlowerBouquetId = nextId + 1;
                 dbContext.FlowerBouquets.Add(flower);
-                int status = dbContext.SaveChanges();
+                status = dbContext.SaveChanges();
                 return status;
             }
             catch (Exception ex)

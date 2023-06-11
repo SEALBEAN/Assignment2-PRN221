@@ -7,9 +7,7 @@
     var role = HttpContext.Session.GetString("role");
     var name = HttpContext.Session.GetString("name");
 
-    ICustomerRepository _customerRepository = new CustomerRepository();
-    var customerId = HttpContext.Session.GetString("CustomerID");
-    var customer = _customerRepository.GetCustomers().Where(x => x.CustomerId == int.Parse(customerId)).FirstOrDefault();
+    
 }
 <style>
     .btn-primary {
@@ -27,6 +25,9 @@
         <h1>Manage Customers</h1>
         <p>Welcome, Admin @name!</p>
 
+        ICustomerRepository _customerRepository = new CustomerRepository();
+        var customerId = HttpContext.Session.GetString("CustomerID");
+        var customer = _customerRepository.GetCustomers().Where(x => x.CustomerId == int.Parse(customerId)).FirstOrDefault();
         //display the customer details as a form and able to update the customer details
         <form method="post" asp-page-handler="UpdateCustomer">
             <input type="hidden" name="customerId" value="@customer.CustomerId" />

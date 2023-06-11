@@ -1,0 +1,122 @@
+﻿@page
+@model RazorPage.Pages.Flower.AddFlowerModel
+@using Repository;
+@using Microsoft.AspNetCore.Http;
+
+@{
+    var role = HttpContext.Session.GetString("role");
+    var name = HttpContext.Session.GetString("name");
+}
+<style>
+    .btn-primary {
+        float: left;
+    }
+
+    .btn-right {
+        float: right;
+    }
+
+</style>
+@{
+    if (role == "admin")
+    {
+        <h1>Manage Customers</h1>
+        <p>Welcome, Admin @name!</p>
+
+        ICategoryRepository _categoryRepository = new CategoryRepository();
+        var categories = _categoryRepository.GetCategories();
+        ISupplierRepository _supplierRepository = new SupplierRepository();
+        var suppliers = _supplierRepository.GetSuppliers();
+
+        <form method="post" asp-page-handler="AddFlower">
+            <div class="form-group">
+                <label for="categoryId">Category</label>
+                <select class="form-control" id="categoryId" name="categoryId">
+                    <option value="">Select a category</option>
+                    @foreach (var category in categories)
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                </select>
+            </div>
+            @if (ViewData["CategoryId"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["CategoryId"]
+                </div>
+            }
+            <div class="form-group">
+                <label for="flowerName">Flower Bouquet Name</label>
+                <input type="text" class="form-control" id="flowerName" name="flowerName" required />
+            </div>
+            @if (ViewData["Name"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["Name"]
+                </div>
+            }
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" name="description" />
+            </div>
+            <div class="form-group">
+                <label for="unitPrice">Unit Price</label>
+                <input type="text" class="form-control" id="unitPrice" name="unitPrice" required />
+            </div>
+            @if (ViewData["UnitPrice"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["UnitPrice"]
+                </div>
+            }
+            <div class="form-group">
+                <label for="unitInStock">Unit In Stock</label>
+                <input type="text" class="form-control" id="unitInStock" name="unitInStock" required />
+            </div>
+            @if (ViewData["UnitInStock"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["UnitInStock"]
+                </div>
+            }
+            <div class="form-group">
+                <label for="supplierId">Supplier</label>
+                <select class="form-control" id="supplierId" name="supplierId">
+                    <option value="">Select a supplier</option>
+                    @foreach (var supplier in suppliers)
+                    {
+                        <option value="@supplier.SupplierId">@supplier.SupplierName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="flowerBouquetStatus">Status</label>
+                <input type="text" class="form-control" id="flowerBouquetStatus" name="flowerBouquetStatus" value="1" />
+            </div>
+            @if (ViewData["Status"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["Status"]
+                </div>
+            }
+            <button type="submit" class="btn btn-primary">Add Flower</button>
+
+        </form>
+
+        @if (ViewData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewData["Message"]
+            </div>
+
+            <a href="/Flower/ManageFlower" class="btn btn-primary btn-right">Back to Manage Customer</a>
+
+        }
+    }
+    else
+    {
+        <h1>Access Denied</h1>
+        <p>This page is restricted to administrators only. Please log in as an admin to access this page.</p>
+        <a href="/login" class="btn btn-primary">Go to Login</a>
+    }
+}

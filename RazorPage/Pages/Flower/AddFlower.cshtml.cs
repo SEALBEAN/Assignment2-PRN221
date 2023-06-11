@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+using BusinessObject;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repository;
@@ -7,22 +7,20 @@ using System.Linq;
 
 namespace RazorPage.Pages.Flower
 {
-    public class EditFlowerModel : PageModel
+    public class AddFlowerModel : PageModel
     {
-        public IActionResult OnPostUpdateFlower()
+        public IActionResult OnPostAddFlower()
         {
-            //get the flower ID from the session
-            string flowerId = HttpContext.Session.GetString("FlowerID");
-
-            // Get the flower from the repository
-            IFlowerRepository flowers = new FlowerRepository();
-            var flower = flowers.GetFlowers().Where(x => x.FlowerBouquetId == int.Parse(flowerId)).FirstOrDefault();
-
-            // Update the flower from the form data
-
+            // Get the flower from the form data
+            FlowerBouquet flower = new FlowerBouquet();
             if (Request.Form["categoryId"] != "")
             {
                 flower.CategoryId = int.Parse(Request.Form["categoryId"]);
+            }
+            else
+            {
+                ViewData["CategoryId"] = "CategoryId must have value";
+                return Page();
             }
             flower.FlowerBouquetName = Request.Form["flowerName"];
             flower.Description = Request.Form["description"];
@@ -55,21 +53,23 @@ namespace RazorPage.Pages.Flower
                 return Page();
             }
 
-
-            // Store the customer in the repository
-            int status = flowers.UpdateFlower(flower);
+            IFlowerRepository flowers = new FlowerRepository();
+            if (flowers.GetFlowers().Where(x => x.FlowerBouquetName == flower.FlowerBouquetName).FirstOrDefault() != null)
+            {
+                ViewData["Name"] = "Duplicate name";
+                return Page();
+            }
+            int status = flowers.AddFlower(flower);
 
             //If status >0 return update success to page
             if (status > 0)
             {
-                ViewData["Message"] = "Update success";
+                ViewData["Message"] = "Create new Flower successfully";
             }
             else
             {
-                ViewData["Message"] = "Update fail";
+                ViewData["Message"] = "Create fail";
             }
-
-            // Return to page
             return Page();
         }
     }

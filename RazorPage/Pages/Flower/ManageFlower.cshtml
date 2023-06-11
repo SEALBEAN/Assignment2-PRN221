@@ -11,6 +11,17 @@
     IFlowerRepository _flowerRepository= new FlowerRepository();
     var flowers = _flowerRepository.GetFlowers();
 }
+<script>
+    function confirmDelete() {
+        var result = confirm("Are you sure you want to delete this flower?");
+        if (result) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+</script>
 
 @{
 
@@ -18,6 +29,7 @@
     {
         <h1>Manage Flower Bouquets</h1>
         <p>Welcome, Admin @name!</p>
+        <a href="/MainPage" class="btn btn-primary">Back to MainPage</a>
 
         <table class="table">
             <thead>

@@ -1,18 +1,17 @@
 ﻿using BusinessObject;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAcess
 {
-    public class CategoryDAO
+    public class OrderDAO
     {
-        private static CategoryDAO instance = null;
+        private static OrderDAO instance = null;
         private static readonly object instanceLock = new object();
-        public static CategoryDAO Instance
+        public static OrderDAO Instance
         {
             get
             {
@@ -20,40 +19,42 @@ namespace DataAcess
                 {
                     if (instance == null)
                     {
-                        instance = new CategoryDAO();
+                        instance = new OrderDAO();
                     }
                     return instance;
                 }
             }
         }
-        public static Category GetCategoryById(int id)
+        public static List<Order> GetOrders()
         {
-            Category category;
+            List<Order> orders;
             try
             {
                 var dbContext = new FUFlowerBouquetManagementContext();
-                category = dbContext.Categories.Where(x => x.CategoryId == id).FirstOrDefault();
+                orders = dbContext.Orders.ToList();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return category;
+            return orders;
         }
 
-        public static IEnumerable<Category> GetCategories()
+        public static int UpdateOrder(Order order)
         {
-            IEnumerable<Category> categories;
+            int status = 0;
             try
             {
                 var dbContext = new FUFlowerBouquetManagementContext();
-                categories = dbContext.Categories.ToList();
+                var orderUpdate = dbContext.Orders.Where(x => x.OrderId == order.OrderId).FirstOrDefault();
+                orderUpdate.OrderStatus = order.OrderStatus;
+                status = dbContext.SaveChanges();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return categories;
+            return status;
         }
     }
 }

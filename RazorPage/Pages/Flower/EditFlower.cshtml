@@ -2,14 +2,13 @@
 @model EditFlowerModel
 @using Repository;
 @using Microsoft.AspNetCore.Http;
+@using BusinessObject;
 
 @{
     var role = HttpContext.Session.GetString("role");
     var name = HttpContext.Session.GetString("name");
 
-    IFlowerRepository _flowerRepository = new FlowerRepository();
-    var flowerId = HttpContext.Session.GetString("FlowerID");
-    var flower = _flowerRepository.GetFlowers().Where(x => x.FlowerBouquetId == int.Parse(flowerId)).FirstOrDefault();
+    
 }
 <style>
     .btn-primary {
@@ -27,12 +26,25 @@
         <h1>Manage Customers</h1>
         <p>Welcome, Admin @name!</p>
 
+        IFlowerRepository _flowerRepository = new FlowerRepository();
+        var flowerId = HttpContext.Session.GetString("FlowerID");
+        var flower = _flowerRepository.GetFlowers().Where(x => x.FlowerBouquetId == int.Parse(flowerId)).FirstOrDefault();
+
         ICategoryRepository _categoryRepository = new CategoryRepository();
         var categories = _categoryRepository.GetCategories();
-        var currentCategory = _categoryRepository.GetCategoryByID(flower.CategoryId);
+        Category currentCategory = null;
+        if (flower.CategoryId != 0)
+        {
+            currentCategory =  _categoryRepository.GetCategoryByID(flower.CategoryId);
+        } 
         ISupplierRepository _supplierRepository = new SupplierRepository();
         var suppliers = _supplierRepository.GetSuppliers();
-        var currentSupplier = _supplierRepository.GetSupplierByID(flower.SupplierId.Value);
+        Supplier currentSupplier = null;
+        if (flower.SupplierId != null)
+        {
+            currentSupplier = _supplierRepository.GetSupplierByID(flower.SupplierId.Value);
+        }
+     
 
 
 
@@ -42,10 +54,22 @@
             <div class="form-group">
                 <label for="categoryId">Category</label>
                 <select class="form-control" id="categoryId" name="categoryId">
+                    @if(@currentCategory == null)
+                    {
+                        <option value="">No Category</option>
+                    }
+                    else
+                    {
                     <option value="@currentCategory.CategoryId">@currentCategory.CategoryName</option>
+                    }
+                    
                     @foreach (var category in categories)
                     {
-                        if (category.CategoryName != currentCategory.CategoryName)
+                        if (currentCategory == null)
+                        {
+                            <option value="@category.CategoryId">@category.CategoryName</option>
+                        }
+                        else if(category.CategoryName != currentCategory.CategoryName)
                         {
                             <option value="@category.CategoryId">@category.CategoryName</option>
                         }
@@ -56,6 +80,12 @@
                 <label for="flowerName">Flower Bouquet Name</label>
                 <input type="text" class="form-control" id="flowerName" name="flowerName" value="@flower.FlowerBouquetName" />
             </div>
+            @if (ViewData["Name"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["Name"]
+                </div>
+            }
             <div class="form-group">
                 <label for="description">Description</label>
                 <input type="text" class="form-control" id="description" name="description" value="@flower.Description" />
@@ -64,18 +94,40 @@
                 <label for="unitPrice">Unit Price</label>
                 <input type="text" class="form-control" id="unitPrice" name="unitPrice" value="@flower.UnitPrice" />
             </div>
-
+            @if (ViewData["UnitPrice"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["UnitPrice"]
+                </div>
+            }
             <div class="form-group">
                 <label for="unitInStock">Unit In Stock</label>
                 <input type="text" class="form-control" id="unitInStock" name="unitInStock" value="@flower.UnitsInStock" />
             </div>
+            @if (ViewData["UnitInStock"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["UnitInStock"]
+                </div>
+            }
             <div class="form-group">
                 <label for="supplierId">Supplier</label>
                 <select class="form-control" id="supplierId" name="supplierId">
-                    <option value="@currentSupplier.SupplierId">@currentSupplier.SupplierName</option>
+                    @if (currentSupplier == null)
+                    {
+                        <option value="">No Supplier</option>
+                    }
+                    else
+                    {
+                        <option value="@currentSupplier.SupplierId">@currentSupplier.SupplierName</option>
+                    }
                     @foreach (var supplier in suppliers)
                     {
-                        if (supplier.SupplierName != currentSupplier.SupplierName)
+                        if (currentSupplier == null)
+                        {
+                            <option value="@supplier.SupplierId">@supplier.SupplierName</option>
+                        }
+                        else if (supplier.SupplierName != currentSupplier.SupplierName)
                         {
                             <option value="@supplier.SupplierId">@supplier.SupplierName</option>
                         }
@@ -86,6 +138,12 @@
                 <label for="flowerBouquetStatus">Status</label>
                 <input type="text" class="form-control" id="flowerBouquetStatus" name="flowerBouquetStatus" value="@flower.FlowerBouquetStatus" />
             </div>
+            @if (ViewData["Status"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["Status"]
+                </div>
+            }
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
         //if update success show the message using
