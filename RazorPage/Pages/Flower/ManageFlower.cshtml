@@ -1,7 +1,7 @@
 ﻿@page
 @using Microsoft.AspNetCore.Http;
 @using Repository;
-@model RazorPage.Pages.ManageFlowerModel
+@model ManageFlowerModel
 @using BusinessObject;
 
 @{
@@ -27,6 +27,7 @@
                     <th>Flower Bouquet Name</th>
                     <th>Description</th>
                     <th>UnitPrice</th>
+                    <th>Unit In Stock</th>
                     <th>Status</th>
                     <th>Supplier</th>
                 </tr>
@@ -47,6 +48,7 @@
                         <td>@flower.FlowerBouquetName</td>
                         <td>@flower.Description</td>
                         <td>@flower.UnitPrice</td>
+                        <td>@flower.UnitsInStock</td>
                         <td>@flower.FlowerBouquetStatus</td>
                         @{
                             string supplierName = "";
@@ -61,11 +63,11 @@
                         <td>@supplierName</td>
                         <td>
                             <form method="post" asp-page-handler="UpdateFlower">
-                                <input type="hidden" name="FlowerId" value="@flower.SupplierId" />
+                                <input type="hidden" name="FlowerId" value="@flower.FlowerBouquetId" />
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </form>
                             <form method="post" asp-page-handler="DeleteFlower" onsubmit="return confirmDelete()">
-                                <input type="hidden" name="FlowerId" value="@flower.SupplierId" />
+                                <input type="hidden" name="FlowerId" value="@flower.FlowerBouquetId" />
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
 
@@ -84,7 +86,7 @@
                 alert(message);
             </script>
         }
-        <a href="/AddCustomer" class="btn btn-primary">Add New Customer</a>
+        <a href="/Flower/AddFlower" class="btn btn-primary">Add New Flower</a>
     }
     else
     {

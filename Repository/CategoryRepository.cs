@@ -17,7 +17,7 @@ namespace Repository
 
         public IEnumerable<Category> GetCategories()
         {
-            throw new NotImplementedException();
+            return CategoryDAO.GetCategories();
         }
 
         public Category GetCategoryByID(int categoryID)

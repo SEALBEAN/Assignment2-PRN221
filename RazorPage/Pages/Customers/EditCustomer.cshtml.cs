@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repository;
 
-namespace RazorPage.Pages
+namespace RazorPage.Pages.Customers
 {
     public class EditCustomerModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace RazorPage.Pages
 
             // Get the customer from the repository
             ICustomerRepository customers = new CustomerRepository();
-            var customer = customers.GetCustomers().Where(x=> x.CustomerId == int.Parse(customerId)).FirstOrDefault();
+            var customer = customers.GetCustomers().Where(x => x.CustomerId == int.Parse(customerId)).FirstOrDefault();
 
             // Update the customer from the form data
             customer.CustomerName = Request.Form["customerName"];

@@ -42,5 +42,19 @@ namespace DataAcess
             return supplier;
         }
 
+        public static IEnumerable<Supplier> GetSuppliers()
+        {
+            IEnumerable<Supplier> suppliers;
+            try
+            {
+                var dbContext = new FUFlowerBouquetManagementContext();
+                suppliers = dbContext.Suppliers.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return suppliers;
+        }
     }
 }

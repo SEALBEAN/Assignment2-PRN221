@@ -1,11 +1,10 @@
-using BusinessObject;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repository;
 using System;
 using System.Linq;
 
-namespace RazorPage.Pages
+namespace RazorPage.Pages.Customers
 {
     public class AddCustomerModel : PageModel
     {
@@ -13,7 +12,7 @@ namespace RazorPage.Pages
         public IActionResult OnPostAddCustomer()
         {
             // Get the customer from the form data
-            Customer customer = new Customer();
+            BusinessObject.Customer customer = new BusinessObject.Customer();
             customer.CustomerName = Request.Form["customerName"];
             customer.Email = Request.Form["email"];
             customer.Password = Request.Form["password"];

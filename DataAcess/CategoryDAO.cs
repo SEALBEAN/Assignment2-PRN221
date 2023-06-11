@@ -41,5 +41,20 @@ namespace DataAcess
             }
             return category;
         }
+
+        public static IEnumerable<Category> GetCategories()
+        {
+            IEnumerable<Category> categories;
+            try
+            {
+                var dbContext = new FUFlowerBouquetManagementContext();
+                categories = dbContext.Categories.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return categories;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@page
-@model RazorPage.Pages.ManageCustomerModel
+@model ManageCustomerModel
 @using Microsoft.AspNetCore.Http;
+@using RazorPage.Pages.Customers;
 @using Repository;
 @using System.Globalization;
 @{
@@ -85,7 +86,7 @@
             alert(message);
         </script>
     }
-    <a href="/AddCustomer" class="btn btn-primary">Add New Customer</a>
+    <a href="/Customers/AddCustomer" class="btn btn-primary">Add New Customer</a>
 }
 else
 {

@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repository;
-namespace RazorPage.Pages
+namespace RazorPage.Pages.Customers
 {
     public class ManageCustomerModel : PageModel
     {
-        
+
 
         public IActionResult OnPostUpdateCustomer(string customerId)
         {
@@ -19,7 +19,7 @@ namespace RazorPage.Pages
             HttpContext.Session.SetString("CustomerID", customerId);
 
             // Redirect to the "/EditCustomer" page
-            return RedirectToPage("/EditCustomer");
+            return RedirectToPage("/Customers/EditCustomer");
         }
 
         public IActionResult OnPostDeleteCustomer(string customerId)

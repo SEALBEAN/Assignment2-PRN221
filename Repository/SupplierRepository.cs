@@ -17,7 +17,7 @@ namespace Repository
 
         public IEnumerable<Supplier> GetSuppliers()
         {
-            throw new NotImplementedException();
+            return SupplierDAO.GetSuppliers();
         }
 
         public Supplier GetSupplierByID(int supplierID)
