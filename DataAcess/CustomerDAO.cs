@@ -94,5 +94,23 @@ namespace DataAcess
                 throw new Exception(ex.Message);
             }   
         }
+
+        public int AddCustomer(Customer customer)
+        {
+            try
+            {
+                var dbContext = new FUFlowerBouquetManagementContext();
+                var nextId = dbContext.Customers.OrderByDescending(x => x.CustomerId).FirstOrDefault().CustomerId;
+                int status = 0;
+                customer.CustomerId = nextId + 1;
+                dbContext.Customers.Add(customer);
+                status = dbContext.SaveChanges();
+                return status;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

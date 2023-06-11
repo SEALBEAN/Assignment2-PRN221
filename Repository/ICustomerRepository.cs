@@ -9,6 +9,7 @@ namespace Repository
 {
     public interface ICustomerRepository
     {
+        int AddCustomer(Customer customer);
         int DeleteCustomer(int customerId);
         IEnumerable<Customer> GetCustomers();
         int UpdateCustomer(Customer customer);

@@ -7,6 +7,11 @@ namespace Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
+        public int AddCustomer(Customer customer)
+        {
+            return CustomerDAO.Instance.AddCustomer(customer);
+        }
+
         public int DeleteCustomer(int customerId)
         {
             return CustomerDAO.Instance.DeleteCustomer(customerId);

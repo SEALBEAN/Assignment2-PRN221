@@ -158,3 +158,5 @@ D:\Assignment2\RazorPage\obj\Debug\net5.0\staticwebassets\msbuild.buildMultiTarg
 D:\Assignment2\RazorPage\obj\Debug\net5.0\staticwebassets\msbuild.buildTransitive.RazorPage.props
 D:\Assignment2\RazorPage\obj\Debug\net5.0\Razor\Pages\EditCustomer.cshtml.g.cs
 D:\Assignment2\RazorPage\obj\Debug\net5.0\refint\RazorPage.dll
+D:\Assignment2\RazorPage\obj\Debug\net5.0\Razor\Pages\AddCustomer.cshtml.g.cs
+D:\Assignment2\RazorPage\obj\Debug\net5.0\Razor\Pages\ManageFlower.cshtml.g.cs

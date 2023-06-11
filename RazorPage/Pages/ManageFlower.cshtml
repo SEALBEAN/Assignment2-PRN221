@@ -1,0 +1,97 @@
+﻿@page
+@using Microsoft.AspNetCore.Http;
+@using Repository;
+@model RazorPage.Pages.ManageFlowerModel
+@using BusinessObject;
+
+@{
+    var role = HttpContext.Session.GetString("role");
+    var name = HttpContext.Session.GetString("name");
+
+    IFlowerRepository _flowerRepository= new FlowerRepository();
+    var flowers = _flowerRepository.GetFlowers();
+}
+
+@{
+
+    @if (role == "admin")
+    {
+        <h1>Manage Flower Bouquets</h1>
+        <p>Welcome, Admin @name!</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Flower ID</th>
+                    <th>Category</th>
+                    <th>Flower Bouquet Name</th>
+                    <th>Description</th>
+                    <th>UnitPrice</th>
+                    <th>Status</th>
+                    <th>Supplier</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var flower in flowers)
+                {
+                    <tr>
+                        <td>@flower.FlowerBouquetId</td>
+                        @{
+                            string categoryName = "";
+                            //get category name by category id using category repository
+                            ICategoryRepository _categoryRepository = new CategoryRepository();
+                            var category = _categoryRepository.GetCategoryByID(flower.CategoryId);
+                            categoryName = category.CategoryName;
+                        }
+                        <td>@categoryName</td>
+                        <td>@flower.FlowerBouquetName</td>
+                        <td>@flower.Description</td>
+                        <td>@flower.UnitPrice</td>
+                        <td>@flower.FlowerBouquetStatus</td>
+                        @{
+                            string supplierName = "";
+                            //Check null flower.supplierid
+                            if (flower.SupplierId != null)
+                            {
+                                ISupplierRepository _supplierRepository = new SupplierRepository();
+                                var supplier = _supplierRepository.GetSupplierByID(flower.SupplierId.Value);
+                                supplierName = supplier.SupplierName;
+                            }
+                        }
+                        <td>@supplierName</td>
+                        <td>
+                            <form method="post" asp-page-handler="UpdateFlower">
+                                <input type="hidden" name="FlowerId" value="@flower.SupplierId" />
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </form>
+                            <form method="post" asp-page-handler="DeleteFlower" onsubmit="return confirmDelete()">
+                                <input type="hidden" name="FlowerId" value="@flower.SupplierId" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+
+        </table>
+
+        @if (ViewData["Message"] != null)
+        {
+            <script>
+                var message = @Html.Raw(Json.Serialize(ViewData["Message"].ToString()));
+                alert(message);
+            </script>
+        }
+        <a href="/AddCustomer" class="btn btn-primary">Add New Customer</a>
+    }
+    else
+    {
+        <h1>Access Denied</h1>
+        <p>This page is restricted to administrators only. Please log in as an admin to access this page.</p>
+        <a href="/login" class="btn btn-primary">Go to Login</a>
+    }
+
+
+}

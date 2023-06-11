@@ -1,5 +1,15 @@
 ﻿@page
 @model RazorPage.Pages.LoginModel
+<style>
+    .btn-primary {
+        float: left;
+    }
+
+    .btn-right {
+        float: right;
+    }
+
+</style>
 @{
     <form method="post">
         <div class="form-group">
@@ -21,5 +31,7 @@
         <div class="form-group">
             <button type="submit" class="btn-primary">Login</button>
         </div>
+        <div class="form-group">
+            <a href="/AddCustomer" class="btn btn-primary btn-right">Sign up</a>
     </form>
 }

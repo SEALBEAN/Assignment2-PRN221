@@ -1,0 +1,92 @@
+﻿@page
+@model RazorPage.Pages.AddCustomerModel
+@using Microsoft.AspNetCore.Http;
+@using Repository;
+@{
+    var role = HttpContext.Session.GetString("role");
+    var name = HttpContext.Session.GetString("name");
+}
+
+<style>
+    .btn-primary {
+        float: left;
+    }
+
+    .btn-right {
+        float: right;
+    }
+
+</style>
+
+@{
+    if (role == "customer")
+    {
+        <h1>You already logined</h1>
+        <a href="/MainPage" class="btn btn-primary btn-right">Back to Customer Page</a>
+    }else if (role == "admin" || role == null)
+    {
+        if (role == "admin")
+        {
+            <h1>Add Customers</h1>
+            <p>Welcome, Admin @name!</p>
+        }
+        else
+        {
+            <h1>Sign up</h1>
+            <p>Welcome to FU Flower Bouquet!</p>
+        }
+
+        <form method="post" asp-page-handler="AddCustomer">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required />
+            </div>
+            @if (ViewData["Duplicate"] != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewData["Duplicate"]
+                </div>
+            }
+            <div class="form-group">
+                <label for="email">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required />
+            </div>
+            <div class="form-group">
+                <label for="customerName">Customer Name</label>
+                <input type="text" class="form-control" id="customerName" name="customerName" required />
+            </div>
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" name="city" />
+            </div>
+            <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" class="form-control" id="country" name="country" />
+            </div>
+            <div class="form-group">
+                <label for="birthday">Birthday</label>
+                <input type="date" class="form-control" id="birthday" name="birthday" />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Customer</button>
+
+        </form>
+
+        @if (ViewData["Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewData["Message"]
+            </div>
+            if (role == null)
+            {
+                <a href="/Login" class="btn btn-primary btn-right">Go to Login</a>
+            }
+            else
+            {
+                <a href="/ManageCustomer" class="btn btn-primary btn-right">Back to Manage Customer</a>
+            }
+        }
+    }
+
+
+    
+}
