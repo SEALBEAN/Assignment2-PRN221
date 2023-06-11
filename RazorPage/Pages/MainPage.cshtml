@@ -1,0 +1,38 @@
+﻿@page
+@using Microsoft.AspNetCore.Http;
+@model RazorPage.Pages.MainPageModel
+@{
+    var role = HttpContext.Session.GetString("role");
+    var name = HttpContext.Session.GetString("name");
+}
+
+<style>
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+</style>
+
+@if (role == "admin")
+{
+    <h1>Welcome, Admin @name!</h1>
+    <p>You have administrative privileges.</p>
+
+    <div class="button-container">
+        <a href="/ManageCustomer" class="btn btn-primary">Manage Customers</a>
+        <a href="/ManageFlower" class="btn btn-primary">Manage Flowers</a>
+        <a href="/ManageOrder" class="btn btn-primary">Manage Orders</a>
+    </div>
+}
+else if (role == "customer")
+{
+    <h1>Welcome, @name!</h1>
+    <p>You are logged in as a customer.</p>
+}
+else
+{
+    <h1>Welcome, Guest!</h1>
+    <p>Please log in to access the main page.</p>
+    <a href="/login" class="btn btn-primary">Go to Login</a>
+}
